@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>小一社會技巧互動實驗室：全螢幕版</title>
+    <title>小一社會技巧：動畫 Emoji 闖關版</title>
     <style>
         :root { 
             --primary: #3498db; 
@@ -41,11 +41,22 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            position: relative; /* 為了讓動畫 Emoji 絕對定位 */
         }
 
-        /* 標題與文字縮小一點點以騰出空間 */
+        /* 標題與文字 */
         h1 { font-size: 2rem; margin: 10px 0; color: var(--primary); }
         .question-text { font-size: 1.6rem; color: #d35400; font-weight: bold; margin-bottom: 10px; }
+
+        /* 會跳動的 Emoji 動畫 */
+        .bouncing-emoji {
+            display: inline-block;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
 
         /* 核心：圖片會根據剩下空間自動縮放 */
         .image-container { 
@@ -111,7 +122,9 @@
             cursor: pointer;
             border: 4px solid white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-out;
         }
+        .lucky-card:hover { transform: scale(1.05); }
 
         .feedback-box { 
             background: #fff9db; 
@@ -138,6 +151,19 @@
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; align-content: center; }
         .menu-card { padding: 30px; border-radius: 20px; border: 5px solid var(--primary); cursor: pointer; background: white; }
         .menu-card h2 { font-size: 2rem; margin: 10px 0; color: var(--primary); }
+
+        /* 動畫 Emoji 元素 粒子 */
+        .animated-emoji {
+            position: absolute;
+            font-size: 1.5rem;
+            pointer-events: none; /* 讓 Emoji 不會被點擊 */
+            animation: particle 1.5s ease-out forwards;
+        }
+
+        @keyframes particle {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -198,11 +224,11 @@
         ];
 
         const helperData = [
-            { scenario: "情境一：小美在跑步時跌倒了，看起來很痛...", img: "image/sad.png", options: ["拿衛生紙給她", "笑她是愛哭鬼", "請老師來幫忙"], correct: [0, 2], feedback: "給予關懷或尋求老師幫助，都是最棒的！" },
-            { scenario: "情境二：小美找不到畫筆，急得快要哭出來了...", img: "image/fear.png", options: ["問她：需要幫忙嗎？", "不理她繼續畫", "陪著她一起找"], correct: [0, 2], feedback: "主動詢問與陪伴，能讓對方感覺不再害怕。" },
-            { scenario: "情境三：小華一個人坐在位子上，看起來很寂寞...", img: "image/sad.png", options: ["主動邀請：要不要一起玩？", "當作沒看到", "請老師找他玩"], correct: [0, 2], feedback: "溫暖的邀請或請老師幫忙，能讓同學不孤單。" },
-            { scenario: "情境四：小明不小心把彩色筆掉在地上，亂七八糟的...", img: "image/fear.png", options: ["幫他一起撿起來", "笑他笨手笨腳", "去請老師來協助"], correct: [0, 2], feedback: "伸出援手或找人協助，才是解決問題的好方法！" },
-            { scenario: "情境五：大雄想玩積木，但積木都被同學拿走了...", img: "image/sad.png", options: ["跟他說：我們輪流玩好嗎？", "直接搶過來", "請老師幫忙協調"], correct: [0, 2], feedback: "練習詢問輪流或請老師幫忙，大家都開心！" }
+            { scenario: "情境一：小美跑步跌倒了，看起來很痛...", img: "image/sad.png", options: ["拿衛生紙給她", "笑她是愛哭鬼", "請老師來幫忙"], correct: [0, 2], feedback: "給予關懷或請老師幫忙，都是最棒的！" },
+            { scenario: "情境二：小美找不到畫筆，急得快哭了...", img: "image/fear.png", options: ["問她：需要幫忙嗎？", "不理她繼續畫", "陪著她一起找"], correct: [0, 2], feedback: "主動詢問與陪伴，能讓對方不再害怕。" },
+            { scenario: "情境三：小華一個人坐在位子上，看起來寂寞...", img: "image/sad.png", options: ["主動邀請：一起玩？", "當作沒看到", "請老師找他玩"], correct: [0, 2], feedback: "溫暖的邀請或請老師幫忙，不讓同學孤單。" },
+            { scenario: "情境四：小明彩色筆掉滿地，亂七八糟的...", img: "image/fear.png", options: ["幫他捡起來", "笑他笨手笨腳", "去請老師來協助"], correct: [0, 2], feedback: "伸出援手或找老師協助，才是好方法！" },
+            { scenario: "情境五：大雄積木都被同學拿走了，很難過...", img: "image/sad.png", options: ["問他：輪流玩好嗎？", "直接搶過來", "請老師幫忙協調"], correct: [0, 2], feedback: "輪流玩或請老師幫忙，大家都開心！" }
         ];
 
         let currentMode = '';
@@ -285,7 +311,7 @@
 
         function startPractice() {
             isPracticeMode = true;
-            document.getElementById('q-text').innerText = "🌟 抽籤大挑戰：選一張卡片上台演演看！";
+            document.getElementById('q-text').innerHTML = "🌟 抽籤大挑戰<span class='bouncing-emoji'>🤩</span>：選卡片上台練習！";
             document.getElementById('result-display').style.display = 'none';
             document.getElementById('feedback-area').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
@@ -306,6 +332,36 @@
             nextBtn.innerText = "完成 ➔";
             nextBtn.style.display = 'inline-block';
             nextBtn.onclick = startPractice;
+
+            // 觸發慶祝動畫 Emoji
+            createAnimatedEmojis(15);
+        }
+
+        function createAnimatedEmojis(count) {
+            const emojis = ['✨', '🎉', '🎈', '🤩', '💖', '🎈'];
+            const container = document.getElementById('game-container');
+            for (let i = 0; i < count; i++) {
+                const emoji = document.createElement('div');
+                emoji.classList.add('animated-emoji');
+                emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                // 設定隨機方向
+                const x = (Math.random() - 0.5) * 600; // 左右隨機偏移
+                const y = -Math.random() * 400 - 100; // 隨機向上噴發
+                emoji.style.setProperty('--x', `${x}px`);
+                emoji.style.setProperty('--y', `${y}px`);
+                
+                // 設定隨機延遲和大小
+                emoji.style.animationDelay = `${Math.random() * 0.5}s`;
+                emoji.style.fontSize = `${1 + Math.random() * 1}rem`;
+
+                container.appendChild(emoji);
+                
+                // 動畫結束後移除元素
+                setTimeout(() => {
+                    emoji.remove();
+                }, 2000); // 動畫時間(1.5s) + 延遲時間(0.5s)
+            }
         }
 
         function goHome() {
