@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小一社會技巧互動實驗室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小一社會技巧互動實驗室：全螢幕版</title>
     <style>
         :root { 
             --primary: #3498db; 
@@ -14,124 +14,149 @@
             --bg: #f8f9fa;
         }
 
+        /* 禁止捲動，讓畫面固定在一個螢幕內 */
+        html, body { 
+            height: 100%; 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg);
+        }
+
         body { 
-            font-family: 'Microsoft JhengHei', sans-serif; 
-            background-color: var(--bg); 
             display: flex; 
-            flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px; 
         }
         
         .container { 
-            width: 100%; 
-            max-width: 900px; 
+            width: 95vw; 
+            height: 95vh; 
             background: white; 
-            padding: 40px; 
-            border-radius: 30px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
-            text-align: center; 
-        }
-
-        /* 首頁樣式 */
-        .emoji-header { font-size: 80px; margin-bottom: 20px; animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px; }
-        .menu-card { 
-            padding: 40px 20px; 
+            padding: 20px; 
             border-radius: 20px; 
-            border: 5px solid var(--primary); 
-            cursor: pointer; 
-            transition: 0.3s; 
-            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
-        .menu-card:hover { transform: scale(1.05); background: #e3f2fd; }
-        .menu-card h2 { font-size: 28px; color: var(--primary); }
 
-        /* 遊戲區域樣式 */
-        .game-screen { display: none; }
-        .question-text { font-size: 28px; color: #d35400; font-weight: bold; margin-bottom: 25px; min-height: 40px; }
+        /* 標題與文字縮小一點點以騰出空間 */
+        h1 { font-size: 2rem; margin: 10px 0; color: var(--primary); }
+        .question-text { font-size: 1.6rem; color: #d35400; font-weight: bold; margin-bottom: 10px; }
+
+        /* 核心：圖片會根據剩下空間自動縮放 */
         .image-container { 
-            width: 350px; 
-            height: 350px; 
-            margin: 0 auto 30px; 
-            border: 8px solid var(--warning); 
-            border-radius: 25px; 
+            flex: 1; /* 自動填滿剩餘空間 */
+            min-height: 0; /* 關鍵：允許圖片縮得比原始尺寸小 */
+            margin: 10px auto; 
+            border: 6px solid var(--warning); 
+            border-radius: 20px; 
             overflow: hidden; 
-            background: #fff; 
-            display: flex; align-items: center; justify-content: center;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 80%;
         }
-        .image-container img { width: 100%; height: 100%; object-fit: cover; }
+        .image-container img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+        }
 
-        /* 選項按鈕 */
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 700px; margin: 0 auto; }
+        /* 按鈕區塊：固定在下方 */
+        .options-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            width: 100%;
+            max-width: 800px; 
+            margin: 10px auto; 
+        }
         .helper-mode .options-grid { grid-template-columns: 1fr; } 
 
         button.btn { 
-            padding: 18px; 
-            font-size: 24px; 
+            padding: 15px; 
+            font-size: 1.5rem; 
             cursor: pointer; 
             border: 3px solid var(--primary); 
             background: white; 
             border-radius: 15px; 
             font-weight: bold; 
+            color: #2c3e50;
         }
         .correct { background: var(--success) !important; color: white !important; }
         .wrong { background: var(--danger) !important; color: white !important; }
 
-        /* 抽籤卡片樣式 */
-        .card-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-top: 30px; }
+        /* 抽籤卡片 */
+        .card-grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 10px; 
+            flex: 1;
+            align-content: center;
+        }
         .lucky-card {
-            height: 150px;
+            aspect-ratio: 1 / 1.4;
             background: var(--secondary);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            font-weight: bold;
+            font-size: 3rem;
             border-radius: 15px;
             cursor: pointer;
-            transition: 0.3s;
             border: 4px solid white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        .lucky-card:hover { transform: translateY(-10px); background: #8e44ad; }
-        .lucky-card.revealed { background: #95a5a6; cursor: default; transform: none; }
 
-        .feedback-box { margin-top: 30px; padding: 25px; border-radius: 20px; display: none; background: #fff9db; border: 3px dashed var(--warning); animation: fadeIn 0.5s; }
-        .feedback-text { font-size: 26px; color: #856404; font-weight: bold; }
+        .feedback-box { 
+            background: #fff9db; 
+            border: 3px dashed var(--warning); 
+            padding: 15px; 
+            border-radius: 15px; 
+            margin-top: 10px;
+        }
+        .feedback-text { font-size: 1.6rem; color: #856404; font-weight: bold; margin: 0; }
         
-        .nav-btns { margin-top: 40px; display: flex; justify-content: center; gap: 25px; }
-        .next-btn { padding: 15px 60px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 24px; display: none; }
-        .home-btn { padding: 10px 30px; background: #95a5a6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; }
+        .nav-btns { margin-top: 15px; display: flex; justify-content: center; gap: 20px; }
+        .next-btn { padding: 12px 40px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 1.5rem; }
+        .home-btn { padding: 8px 25px; background: #95a5a6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; }
 
-        #live-clock { position: fixed; bottom: 20px; left: 20px; background: #2c3e50; color: white; padding: 12px 20px; border-radius: 15px; font-size: 20px; font-family: monospace; z-index: 100; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* 時鐘 */
+        #live-clock { 
+            position: fixed; bottom: 10px; left: 10px; 
+            background: rgba(44, 62, 80, 0.9); color: white; 
+            padding: 8px 15px; border-radius: 10px; 
+            font-size: 1.2rem; font-family: monospace; z-index: 1000; 
+        }
+
+        /* 主選單卡片 */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; align-content: center; }
+        .menu-card { padding: 30px; border-radius: 20px; border: 5px solid var(--primary); cursor: pointer; background: white; }
+        .menu-card h2 { font-size: 2rem; margin: 10px 0; color: var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="main-menu" class="container">
-        <div class="emoji-header">🕵️‍♂️🤝✨</div>
-        <h1>社會技巧實驗室</h1>
+        <h1>🔍 社會技巧實驗室</h1>
         <div class="menu-grid">
             <div class="menu-card" onclick="startGame('emotion')">
-                <span style="font-size: 50px;">🔍</span>
+                <span style="font-size: 4rem;">🔍</span>
                 <h2>情緒小偵探</h2>
             </div>
             <div class="menu-card" onclick="startGame('helper')">
-                <span style="font-size: 50px;">🤝</span>
+                <span style="font-size: 4rem;">🤝</span>
                 <h2>小小助人高手</h2>
             </div>
         </div>
     </div>
 
-    <div id="game-container" class="container game-screen">
+    <div id="game-container" class="container" style="display: none;">
         <div id="q-text" class="question-text"></div>
         
         <div id="card-selection" class="card-grid" style="display: none;">
@@ -142,20 +167,20 @@
             <div class="lucky-card" onclick="revealScenario(4)">5</div>
         </div>
 
-        <div id="result-display">
+        <div id="result-display" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
             <div class="image-container">
                 <img id="display-img" src="" alt="圖片">
             </div>
             <div id="options-bin" class="options-grid"></div>
         </div>
         
-        <div id="feedback-area" class="feedback-box">
+        <div id="feedback-area" class="feedback-box" style="display: none;">
             <p class="feedback-text" id="feedback-msg"></p>
         </div>
 
         <div class="nav-btns">
             <button class="home-btn" onclick="goHome()">回選單</button>
-            <button id="next-btn" class="next-btn" onclick="nextStep()">下一題 ➔</button>
+            <button id="next-btn" class="next-btn" onclick="nextStep()" style="display: none;">下一題 ➔</button>
         </div>
     </div>
 
@@ -189,13 +214,12 @@
             currentIdx = 0;
             isPracticeMode = false;
             document.getElementById('main-menu').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
+            document.getElementById('game-container').style.display = 'flex';
             document.getElementById('card-selection').style.display = 'none';
-            document.getElementById('result-display').style.display = 'block';
+            document.getElementById('result-display').style.display = 'flex';
             
-            const container = document.getElementById('game-container');
-            if (mode === 'helper') container.classList.add('helper-mode');
-            else container.classList.remove('helper-mode');
+            if (mode === 'helper') document.getElementById('game-container').classList.add('helper-mode');
+            else document.getElementById('game-container').classList.remove('helper-mode');
             
             loadContent();
         }
@@ -240,7 +264,7 @@
                     const msg = (currentMode === 'emotion') ? emotionData[currentIdx].ref : helperData[currentIdx].feedback;
                     document.getElementById('feedback-msg').innerText = msg;
                     document.getElementById('next-btn').style.display = 'inline-block';
-                }, 600);
+                }, 500);
             } else {
                 btn.classList.add('wrong');
                 setTimeout(() => btn.classList.remove('wrong'), 800);
@@ -253,61 +277,45 @@
             if (currentIdx < max) {
                 loadContent();
             } else if (currentMode === 'helper' && !isPracticeMode) {
-                // 進入抽籤練習模式
                 startPractice();
             } else {
-                alert("🎉 任務全部完成！");
                 goHome();
             }
         }
 
         function startPractice() {
             isPracticeMode = true;
-            document.getElementById('q-text').innerText = "🌟 抽籤大挑戰：請選一張卡片上台演演看！";
+            document.getElementById('q-text').innerText = "🌟 抽籤大挑戰：選一張卡片上台演演看！";
             document.getElementById('result-display').style.display = 'none';
             document.getElementById('feedback-area').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
             document.getElementById('card-selection').style.display = 'grid';
-            
-            // 重設卡片狀態
-            document.querySelectorAll('.lucky-card').forEach(c => c.classList.remove('revealed'));
+            document.querySelectorAll('.lucky-card').forEach(c => c.style.visibility = 'visible');
         }
 
         function revealScenario(idx) {
-            const cards = document.querySelectorAll('.lucky-card');
-            if (cards[idx].classList.contains('revealed')) return;
-            
-            cards[idx].classList.add('revealed');
             const m = helperData[idx];
-            
             document.getElementById('card-selection').style.display = 'none';
-            document.getElementById('result-display').style.display = 'block';
-            document.getElementById('q-text').innerText = "【上台練習任務】" + m.scenario;
+            document.getElementById('result-display').style.display = 'flex';
+            document.getElementById('q-text').innerText = "任務：" + m.scenario;
             document.getElementById('display-img').src = m.img;
             document.getElementById('options-bin').style.display = 'none';
-            
             document.getElementById('feedback-area').style.display = 'block';
-            document.getElementById('feedback-msg').innerText = "請兩位小朋友上台演演看這個情境喔！";
-            
-            // 讓「回選單」或「再抽一次」按鈕出現
+            document.getElementById('feedback-msg').innerText = "請小朋友上台練習喔！";
             const nextBtn = document.getElementById('next-btn');
-            nextBtn.innerText = "完成練習 ➔";
+            nextBtn.innerText = "完成 ➔";
             nextBtn.style.display = 'inline-block';
-            nextBtn.onclick = () => {
-                nextBtn.innerText = "下一題 ➔"; // 還原文字
-                nextBtn.onclick = nextStep; // 還原功能
-                startPractice(); // 回到抽卡畫面
-            };
+            nextBtn.onclick = startPractice;
         }
 
         function goHome() {
-            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('main-menu').style.display = 'flex';
             document.getElementById('game-container').style.display = 'none';
         }
 
         function updateClock() {
             const now = new Date();
-            document.getElementById('live-clock').innerText = "現在時間：" + now.toLocaleTimeString('zh-TW', { hour12: false });
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('zh-TW', { hour12: false });
         }
         setInterval(updateClock, 1000);
         updateClock();
