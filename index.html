@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>社會技巧：選擇大挑戰 (大電視加分版)</title>
+    <title>社會技巧：選擇大挑戰 (可愛大字版)</title>
+    <!-- 引入圓潤的 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #3498db; 
-            --secondary: #9b59b6; 
-            --success: #2ecc71; 
-            --warning: #f1c40f; 
-            --danger: #e74c3c; 
+            --primary: #54a0ff; 
+            --secondary: #a29bfe; 
+            --success: #26de81; /* 調整為較柔和的綠色 */
+            --warning: #ffeaa7; 
+            --danger: #ff7675; 
             --bg: #fffcf0;
+            --text: #2d3436;
         }
 
         html, body { 
@@ -19,7 +22,8 @@
             margin: 0; 
             padding: 0; 
             overflow: hidden; 
-            font-family: 'Microsoft JhengHei', sans-serif;
+            /* 使用圓潤字體族群 */
+            font-family: 'Quicksand', 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
             background-color: var(--bg);
         }
 
@@ -30,26 +34,41 @@
             height: 98vh; 
             background: white; 
             padding: 30px; 
-            border-radius: 40px; 
-            box-shadow: 0 15px 45px rgba(0,0,0,0.1); 
+            border-radius: 60px; /* 超圓潤角 */
+            box-shadow: 0 20px 0px rgba(0,0,0,0.05); /* 扁平化可愛陰影 */
             text-align: center; 
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
             position: relative;
+            border: 10px solid #f1f2f6;
         }
 
-        /* 大電視字體加強 */
-        h1 { font-size: 3.5rem; margin: 10px 0; color: var(--primary); font-weight: 900; }
-        .instruction { font-size: 2.8rem; color: #d35400; font-weight: bold; margin-bottom: 10px; }
+        /* 可愛標題樣式 */
+        h1 { 
+            font-size: 4rem; 
+            margin: 10px 0; 
+            color: var(--primary); 
+            font-weight: 900;
+            text-shadow: 4px 4px 0px #dff9fb;
+            letter-spacing: 5px;
+        }
+        
+        .instruction { 
+            font-size: 3rem; 
+            color: #ff9f43; 
+            font-weight: bold; 
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #fff;
+        }
 
         /* 內容顯示區 */
         .content-viewer { 
             flex: 1; 
             min-height: 0; 
             margin: 15px auto; 
-            border: 8px solid #f39c12; 
-            border-radius: 30px; 
+            border: 10px solid var(--warning); 
+            border-radius: 50px; 
             overflow: hidden; 
             background: #fff;
             display: flex;
@@ -57,6 +76,7 @@
             justify-content: center;
             width: 95%;
             position: relative;
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.05);
         }
         .content-viewer img { 
             max-width: 100%; 
@@ -64,100 +84,138 @@
             object-fit: contain; 
         }
 
-        /* 互動加分格 */
+        /* 互動加分格：可愛卡片感 */
         #score-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 25px;
             width: 95%;
             padding: 20px;
         }
         .student-card {
-            background: #f8f9fa;
-            border: 4px solid var(--primary);
-            border-radius: 20px;
-            padding: 15px;
+            background: #f1f2f6;
+            border: 5px solid var(--primary);
+            border-radius: 40px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: transform 0.2s;
         }
-        .student-name { font-size: 2.2rem; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
-        .student-score { font-size: 3rem; font-weight: 900; color: var(--danger); margin-bottom: 10px; }
+        .student-name { font-size: 2.5rem; font-weight: bold; color: var(--text); margin-bottom: 5px; }
+        .student-score { 
+            font-size: 4rem; 
+            font-weight: 900; 
+            color: var(--danger); 
+            margin-bottom: 10px;
+            font-family: 'Quicksand', sans-serif;
+        }
         .add-btn {
             width: 100%;
-            padding: 10px;
-            font-size: 1.8rem;
+            padding: 15px;
+            font-size: 2rem;
             background: var(--success);
             color: white;
             border: none;
-            border-radius: 15px;
+            border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 8px 0px #21b677; /* 調整陰影顏色 */
+            transition: all 0.1s;
+        }
+        .add-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0px #21b677;
         }
 
-        /* 選項按鈕放大 */
+        /* 選項按鈕：大泡泡 */
         .choices-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
-            gap: 30px; 
+            gap: 40px; 
             width: 100%;
-            max-width: 1000px; 
+            max-width: 1100px; 
             margin: 15px auto; 
         }
         button.choice-btn { 
-            padding: 30px; 
-            font-size: 2.2rem; 
+            padding: 35px; 
+            font-size: 2.5rem; 
             cursor: pointer; 
-            border: 6px solid var(--primary); 
+            border: 8px solid var(--primary); 
             background: white; 
-            border-radius: 30px; 
+            border-radius: 50px; 
             font-weight: bold; 
             transition: 0.3s;
+            box-shadow: 0 10px 0px #dff9fb;
+        }
+        button.choice-btn:hover {
+            background: #f1f2f6;
+            transform: scale(1.02);
         }
 
-        /* 導覽按鈕放大 */
+        /* 導覽按鈕 */
         .nav-grid { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 15px; }
-        .nav-btn { padding: 15px 50px; font-size: 2rem; cursor: pointer; border-radius: 60px; border: none; background: var(--primary); color: white; font-weight: bold; }
+        .nav-btn { 
+            padding: 20px 60px; 
+            font-size: 2.2rem; 
+            cursor: pointer; 
+            border-radius: 80px; 
+            border: none; 
+            background: var(--primary); 
+            color: white; 
+            font-weight: bold;
+            box-shadow: 0 8px 0px #2980b9;
+        }
+        .nav-btn:active { transform: translateY(4px); box-shadow: 0 4px 0px #2980b9; }
         
-        .home-btn { padding: 10px 40px; background: #95a5a6; color: white; border: none; border-radius: 15px; cursor: pointer; font-size: 1.8rem; font-weight: bold; }
+        .home-btn { 
+            padding: 15px 45px; 
+            background: #dfe6e9; 
+            color: #636e72; 
+            border: none; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-size: 2rem; 
+            font-weight: bold; 
+        }
 
         /* 回饋遮罩 */
         .feedback-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.96);
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 100;
-            border-radius: 30px;
+            border-radius: 50px;
         }
-        .feedback-icon { font-size: 8rem; margin-bottom: 20px; }
-        .feedback-title { font-size: 4rem; font-weight: bold; }
-        .feedback-desc { font-size: 2.5rem; padding: 0 60px; margin-top: 20px; }
+        .feedback-icon { font-size: 10rem; margin-bottom: 20px; }
+        .feedback-title { font-size: 4.5rem; font-weight: bold; color: var(--primary); }
+        .feedback-desc { font-size: 2.8rem; padding: 0 80px; margin-top: 25px; color: #636e72; }
 
         #live-clock { 
-            position: fixed; bottom: 15px; left: 15px; 
-            background: rgba(44, 62, 80, 0.9); color: white; 
-            padding: 10px 20px; border-radius: 15px; 
-            font-size: 1.5rem; font-family: monospace; z-index: 1000; 
+            position: fixed; bottom: 20px; left: 20px; 
+            background: #2d3436; color: white; 
+            padding: 12px 25px; border-radius: 20px; 
+            font-size: 1.8rem; font-family: 'Quicksand', monospace; z-index: 1000; 
         }
 
         .bounce { animation: bounce 1s infinite alternate; display: inline-block; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
     </style>
 </head>
 <body>
 
     <!-- 主選單 -->
     <div id="main-menu" class="container">
-        <h1 style="font-size: 6rem;">🤔 選擇大挑戰</h1>
-        <p style="font-size: 2.5rem; color: #555;">小朋友，遇見問題時，我們該怎麼做呢？</p>
-        <div style="font-size: 10rem; margin: 40px;" class="bounce">💡</div>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 600px; margin: 0 auto; width: 100%;">
-            <button onclick="startMode('book')" style="padding: 30px; font-size: 3rem; background: var(--warning); border: none; border-radius: 30px; cursor: pointer; font-weight: bold;">📖 繪本故事</button>
-            <button onclick="startMode('challenge')" style="padding: 30px; font-size: 3rem; background: var(--success); border: none; border-radius: 30px; cursor: pointer; color: white; font-weight: bold;">🎮 進行選擇大挑戰</button>
+        <h1 style="font-size: 7rem;">🤔 選擇大挑戰</h1>
+        <p style="font-size: 3rem; color: #636e72;">小朋友，遇見問題該怎麼辦？</p>
+        <div style="font-size: 12rem; margin: 30px;" class="bounce">🌟</div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 650px; margin: 0 auto; width: 100%;">
+            <button onclick="startMode('book')" style="padding: 35px; font-size: 3.5rem; background: var(--warning); border: none; border-radius: 40px; cursor: pointer; font-weight: bold; box-shadow: 0 10px 0px #fed330;">📖 繪本故事</button>
+            <button onclick="startMode('challenge')" style="padding: 35px; font-size: 3.5rem; background: var(--success); border: none; border-radius: 40px; cursor: pointer; color: white; font-weight: bold; box-shadow: 0 10px 0px #21b677;">🎮 選擇大挑戰</button>
         </div>
     </div>
 
@@ -167,34 +225,29 @@
         <div id="instr" class="instruction"></div>
         
         <div class="content-viewer">
-            <!-- 圖片顯示 -->
             <img id="display-img" src="" alt="繪本圖片">
-            
-            <!-- 加分格 (初始隱藏) -->
-            <div id="score-grid" style="display: none;">
-                <!-- JS 會填入學生資料 -->
-            </div>
+            <div id="score-grid" style="display: none;"></div>
 
             <!-- 回饋遮罩 -->
             <div id="feedback-overlay" class="feedback-overlay">
                 <div id="fb-icon" class="feedback-icon"></div>
                 <div id="fb-title" class="feedback-title"></div>
                 <div id="fb-desc" class="feedback-desc"></div>
-                <button class="nav-btn" style="margin-top: 40px; background: var(--secondary);" onclick="closeFeedback()">我知道了！</button>
+                <button class="nav-btn" style="margin-top: 50px; background: var(--secondary); box-shadow: 0 8px 0px #6c5ce7;" onclick="closeFeedback()">我知道了！</button>
             </div>
         </div>
 
         <!-- 導讀模式導覽 -->
         <div id="book-nav" class="nav-grid" style="display: none;">
             <button id="prev-btn" class="nav-btn" onclick="changePage(-1)">⬅ 上一頁</button>
-            <span id="page-info" style="font-size: 2.5rem; font-weight: bold;"></span>
+            <span id="page-info" style="font-size: 3rem; font-weight: bold; color: var(--primary);"></span>
             <button id="next-btn" class="nav-btn" onclick="changePage(1)">下一頁 ➡</button>
         </div>
 
         <!-- 挑戰模式按鈕 -->
         <div id="challenge-options" class="choices-grid" style="display: none;">
-            <button id="opt-a" class="choice-btn" style="border-color: #e67e22; color:#e67e22;" onclick="makeChoice(0)"></button>
-            <button id="opt-b" class="choice-btn" style="border-color: #2980b9; color:#2980b9;" onclick="makeChoice(1)"></button>
+            <button id="opt-a" class="choice-btn" style="border-color: #ff9f43; color:#ff9f43;" onclick="makeChoice(0)"></button>
+            <button id="opt-b" class="choice-btn" style="border-color: #54a0ff; color:#54a0ff;" onclick="makeChoice(1)"></button>
         </div>
 
         <div class="nav-btns">
@@ -202,19 +255,16 @@
         </div>
     </div>
 
-    <div id="live-clock">載入時間...</div>
+    <div id="live-clock">載入中...</div>
 
     <script>
-        // 學生名單與初始分數
         const students = ["盧楷", "意欣", "沄恩", "澄洋", "齊安", "欽銓", "宇晴"];
         let studentScores = {};
         students.forEach(s => studentScores[s] = 0);
 
-        // 建立幻燈片流程：在 3-15 頁後插入加分頁
         let slides = [];
         for (let i = 1; i <= 16; i++) {
             slides.push({ type: 'image', src: `images/${i}.jpg` });
-            // 如果是第 3 頁到第 15 頁，後面加一頁加分頁
             if (i >= 3 && i <= 15) {
                 slides.push({ type: 'score' });
             }
@@ -225,24 +275,16 @@
                 scenario: "看到同學在位子上哭得很難過...",
                 img: "images/1.jpg",
                 options: [
-                    { text: "A. 走過去問他：你還好嗎？", correct: true, icon: "💖", title: "溫暖的選擇", desc: "同學覺得心裡暖暖的，他知道有人關心他。" },
-                    { text: "B. 裝作沒看到，走開去玩", correct: false, icon: "👤", title: "孤單的後果", desc: "同學繼續哭，覺得教室裡沒有人想幫他。" }
+                    { text: "A. 問他：你還好嗎？", correct: true, icon: "🍭", title: "好棒的選擇", desc: "同學心裡暖暖的，他知道有人關心他。" },
+                    { text: "B. 裝作沒看到走開", correct: false, icon: "☁️", title: "可以更好喔", desc: "同學會覺得很孤單，沒人想幫他。" }
                 ]
             },
             {
-                scenario: "下課了，好想加入同學正在玩的遊戲...",
+                scenario: "下課了，好想加入大家的遊戲...",
                 img: "images/5.jpg",
                 options: [
-                    { text: "A. 直接衝進去把別人的球拿走", correct: false, icon: "😡", title: "生氣的後果", desc: "同學會不開心，下次可能就不想跟你玩了。" },
-                    { text: "B. 等大家停下來，有禮貌問：我可以一起玩嗎？", correct: true, icon: "🤝", title: "受歡迎的選擇", desc: "大家覺得你有禮貌，會歡迎你一起加入！" }
-                ]
-            },
-            {
-                scenario: "有人不小心撞到你，還對你做鬼臉...",
-                img: "images/10.jpg",
-                options: [
-                    { text: "A. 大聲罵他，或是推回去", correct: false, icon: "💥", title: "衝突的後果", desc: "兩個人都會受傷，而且老師也會很生氣。" },
-                    { text: "B. 先深呼吸，然後去請老師幫忙", correct: true, icon: "👮‍♂️", title: "聰明的選擇", desc: "老師會幫忙處理，你保護了自己，也沒發生衝突。" }
+                    { text: "A. 直接衝進去搶玩具", correct: false, icon: "🌪️", title: "大家會傷心", desc: "同學會不開心，下次可能就不想跟你玩了。" },
+                    { text: "B. 有禮貌問：我可以一起玩嗎？", correct: true, icon: "🎈", title: "受歡迎的第一步", desc: "大家覺得你有禮貌，會很歡迎你加入！" }
                 ]
             }
         ];
@@ -281,11 +323,11 @@
                 imgEl.style.display = 'block';
                 scoreGrid.style.display = 'none';
                 imgEl.src = slide.src;
-                instr.innerText = "我們一起看故事發生了什麼事...";
+                instr.innerText = "我們一起看故事...";
             } else {
                 imgEl.style.display = 'none';
                 scoreGrid.style.display = 'grid';
-                instr.innerText = "🌟 互動時間：老師提問，小朋友加分！";
+                instr.innerText = "✨ 互動加分時間！";
                 renderScores();
             }
             
@@ -303,7 +345,7 @@
                 card.innerHTML = `
                     <div class="student-name">${name}</div>
                     <div class="student-score" id="score-${name}">${studentScores[name]}</div>
-                    <button class="add-btn" onclick="addPoint('${name}')">+1 分</button>
+                    <button class="add-btn" onclick="addPoint('${name}')">+1</button>
                 `;
                 grid.appendChild(card);
             });
@@ -312,11 +354,12 @@
         function addPoint(name) {
             studentScores[name]++;
             document.getElementById(`score-${name}`).innerText = studentScores[name];
-            // 簡單動畫效果
-            document.getElementById(`score-${name}`).style.transform = "scale(1.2)";
-            setTimeout(() => {
-                document.getElementById(`score-${name}`).style.transform = "scale(1)";
-            }, 200);
+            const el = document.getElementById(`score-${name}`);
+            el.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1.5)', color: '#ff7675' },
+                { transform: 'scale(1)' }
+            ], { duration: 300 });
         }
 
         function changePage(delta) {
@@ -349,7 +392,7 @@
             if(challengeIdx < challengeData.length) {
                 updateChallenge();
             } else {
-                alert("🎉 太棒了！你學會了做出好的選擇！");
+                alert("🎉 太棒了！任務挑戰成功！");
                 goHome();
             }
         }
@@ -360,7 +403,7 @@
         }
 
         function updateClock() {
-            document.getElementById('live-clock').innerText = "現在時間：" + new Date().toLocaleTimeString('zh-TW', {hour12:false});
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('zh-TW', {hour12:false});
         }
         setInterval(updateClock, 1000);
         updateClock();
