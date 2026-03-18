@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>社會技巧：選擇大挑戰 (紅綠燈規範版)</title>
+    <title>社會技巧：選擇大挑戰 (紅綠燈控制版)</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -63,7 +63,7 @@
             text-shadow: 1px 1px 0px #fff;
         }
 
-        /* 紅綠燈提示器樣式 */
+        /* 紅綠燈提示器樣式 - 可點擊調整 */
         .traffic-light-container {
             position: absolute;
             top: 20px;
@@ -78,21 +78,46 @@
             z-index: 1000;
         }
         .light-circle {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            background: #444; /* 預設暗色 */
+            background: #444; 
             transition: 0.3s;
+            cursor: pointer; /* 提示老師可以點擊 */
+            border: 2px solid transparent;
         }
-        .light-red.active { background: #ff4757; box-shadow: 0 0 20px #ff4757; }
-        .light-yellow.active { background: #eccc68; box-shadow: 0 0 20px #eccc68; }
-        .light-green.active { background: #2ecc71; box-shadow: 0 0 20px #2ecc71; }
+        .light-circle:hover { border-color: white; }
+        .light-red.active { background: #ff4757; box-shadow: 0 0 25px #ff4757; }
+        .light-yellow.active { background: #eccc68; box-shadow: 0 0 25px #eccc68; }
+        .light-green.active { background: #2ecc71; box-shadow: 0 0 25px #2ecc71; }
         .light-label {
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            min-width: 120px;
+            min-width: 140px;
             text-align: left;
+        }
+
+        /* 首頁嘴巴提示圖示 */
+        .mouth-indicator {
+            font-size: 10rem;
+            margin: 10px 0;
+            background: #f1f2f6;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 10px auto;
+            border: 8px solid var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .mouth-label {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         /* 核心內容區 */
@@ -212,20 +237,26 @@
 </head>
 <body>
 
-    <!-- 紅綠燈指示器 -->
+    <!-- 紅綠燈指示器 (點擊燈泡可手動切換) -->
     <div class="traffic-light-container">
-        <div id="light-red" class="light-circle light-red"></div>
-        <div id="light-yellow" class="light-circle light-yellow"></div>
-        <div id="light-green" class="light-circle light-green"></div>
+        <div id="light-red" class="light-circle light-red" onclick="setTrafficLight('red')"></div>
+        <div id="light-yellow" class="light-circle light-yellow" onclick="setTrafficLight('yellow')"></div>
+        <div id="light-green" class="light-circle light-green" onclick="setTrafficLight('green')"></div>
         <div id="light-label" class="light-label">準備開始</div>
     </div>
 
     <!-- 主選單 -->
     <div id="main-menu" class="container">
         <h1>🤔 選擇大挑戰</h1>
+        
+        <!-- 首頁專屬嘴巴指示圖示 -->
+        <div class="mouth-indicator">
+            <span id="home-mouth-icon" style="font-size: 8rem;">🤐</span>
+            <div id="home-mouth-label" class="mouth-label">嘴巴閉閉</div>
+        </div>
+
         <p style="font-size: 2.2rem; color: #636e72;">小朋友，遇見問題該怎麼辦？</p>
-        <div style="font-size: 7rem; margin: 15px;" class="bounce">🌟</div>
-        <div style="display: grid; grid-template-columns: 1fr; gap: 25px; max-width: 500px; margin: 0 auto; width: 100%;">
+        <div style="display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 500px; margin: 0 auto; width: 100%;">
             <button onclick="startMode('book')" style="padding: 25px; font-size: 2.8rem; background: var(--warning); border: none; border-radius: 30px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 0px #fed330;">📖 繪本故事</button>
             <button onclick="startMode('challenge')" style="padding: 25px; font-size: 2.8rem; background: var(--success); border: none; border-radius: 30px; cursor: pointer; color: white; font-weight: bold; box-shadow: 0 8px 0px #21b677;">🎮 選擇大挑戰</button>
         </div>
@@ -306,19 +337,35 @@
             const green = document.getElementById('light-green');
             const label = document.getElementById('light-label');
             
+            // 首頁圖示
+            const mouthIcon = document.getElementById('home-mouth-icon');
+            const mouthLabel = document.getElementById('home-mouth-label');
+            
             red.classList.remove('active');
             yellow.classList.remove('active');
             green.classList.remove('active');
 
             if (color === 'red') {
                 red.classList.add('active');
-                label.innerText = '🔴 安靜專心看';
+                label.innerText = '🔴 嘴巴閉起來';
+                if (mouthIcon) {
+                    mouthIcon.innerText = '🤐';
+                    mouthLabel.innerText = '嘴巴閉閉';
+                }
             } else if (color === 'yellow') {
                 yellow.classList.add('active');
-                label.innerText = '🟡 準備開始';
+                label.innerText = '🟡 準備好了嗎';
+                if (mouthIcon) {
+                    mouthIcon.innerText = '🤔';
+                    mouthLabel.innerText = '等一下下';
+                }
             } else if (color === 'green') {
                 green.classList.add('active');
                 label.innerText = '🟢 現在可以說話';
+                if (mouthIcon) {
+                    mouthIcon.innerText = '🗣️';
+                    mouthLabel.innerText = '請說說看';
+                }
             }
         }
 
@@ -336,7 +383,7 @@
                 document.getElementById('book-nav').style.display = 'none';
                 document.getElementById('challenge-options').style.display = 'grid';
                 challengeIdx = 0;
-                setTrafficLight('green'); // 挑戰模式通常需要討論
+                setTrafficLight('green'); 
                 updateChallenge();
             }
         }
@@ -352,12 +399,12 @@
                 scoreGrid.style.display = 'none';
                 imgEl.src = slide.src;
                 instr.innerText = "我們一起看故事...";
-                setTrafficLight('red'); // 看繪本時要安靜
+                setTrafficLight('red'); 
             } else {
                 imgEl.style.display = 'none';
                 scoreGrid.style.display = 'grid';
                 instr.innerText = "✨ 互動加分時間！";
-                setTrafficLight('green'); // 互動時間可以說話
+                setTrafficLight('green'); 
                 renderScores();
             }
             
@@ -402,7 +449,7 @@
             document.getElementById('display-img').src = q.img;
             document.getElementById('opt-a').innerText = q.options[0].text;
             document.getElementById('opt-b').innerText = q.options[1].text;
-            setTrafficLight('green'); // 挑戰討論時間
+            setTrafficLight('green'); 
         }
 
         function makeChoice(idx) {
@@ -436,7 +483,7 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
-        setTrafficLight('yellow'); // 初始狀態
+        setTrafficLight('yellow'); 
     </script>
 </body>
 </html>
