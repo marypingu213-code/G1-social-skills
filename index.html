@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>社會技巧：選擇大挑戰 (全螢幕優化版)</title>
+    <title>社會技巧：選擇大挑戰 (紅綠燈規範版)</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -17,7 +17,7 @@
             --instruction-color: #ff9f43; 
         }
 
-        /* 強制全螢幕不捲動 */
+        /* 全螢幕設置 */
         html, body { 
             height: 100vh; 
             width: 100vw;
@@ -63,7 +63,39 @@
             text-shadow: 1px 1px 0px #fff;
         }
 
-        /* 核心內容區：自動伸縮不溢出 */
+        /* 紅綠燈提示器樣式 */
+        .traffic-light-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #2d3436;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .light-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #444; /* 預設暗色 */
+            transition: 0.3s;
+        }
+        .light-red.active { background: #ff4757; box-shadow: 0 0 20px #ff4757; }
+        .light-yellow.active { background: #eccc68; box-shadow: 0 0 20px #eccc68; }
+        .light-green.active { background: #2ecc71; box-shadow: 0 0 20px #2ecc71; }
+        .light-label {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: left;
+        }
+
+        /* 核心內容區 */
         .content-viewer { 
             flex: 1; 
             min-height: 0; 
@@ -84,7 +116,7 @@
             object-fit: contain; 
         }
 
-        /* 學生加分格佈局優化 */
+        /* 學生加分格 */
         #score-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -120,7 +152,7 @@
         }
         .add-btn:active { transform: translateY(3px); box-shadow: 0 2px 0px #21b677; }
 
-        /* 按鈕區域：縮小體積 */
+        /* 按鈕區域 */
         .choices-grid { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -139,7 +171,6 @@
             font-weight: bold; 
         }
 
-        /* 導覽區域：縮小按鈕 */
         .nav-grid { display: flex; justify-content: center; align-items: center; width: 100%; gap: 30px; margin-top: 10px; }
         .nav-btn { 
             padding: 10px 40px; 
@@ -156,7 +187,6 @@
 
         .home-btn { position: absolute; top: 20px; right: 20px; padding: 8px 25px; background: #dfe6e9; color: #636e72; border: none; border-radius: 15px; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
 
-        /* 回饋與時鐘 */
         #live-clock { 
             position: fixed; bottom: 15px; left: 15px; 
             background: #2d3436; color: white; 
@@ -167,7 +197,6 @@
         .bounce { animation: bounce 1s infinite alternate; display: inline-block; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
-        /* 遮罩 */
         .feedback-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -183,6 +212,14 @@
 </head>
 <body>
 
+    <!-- 紅綠燈指示器 -->
+    <div class="traffic-light-container">
+        <div id="light-red" class="light-circle light-red"></div>
+        <div id="light-yellow" class="light-circle light-yellow"></div>
+        <div id="light-green" class="light-circle light-green"></div>
+        <div id="light-label" class="light-label">準備開始</div>
+    </div>
+
     <!-- 主選單 -->
     <div id="main-menu" class="container">
         <h1>🤔 選擇大挑戰</h1>
@@ -194,7 +231,7 @@
         </div>
     </div>
 
-    <!-- 遊戲/導讀區域 -->
+    <!-- 遊戲區域 -->
     <div id="game-area" class="container" style="display: none;">
         <div id="instr" class="instruction">我們一起看故事...</div>
         
@@ -262,6 +299,29 @@
         let slideIdx = 0;
         let challengeIdx = 0;
 
+        // 紅綠燈控制函數
+        function setTrafficLight(color) {
+            const red = document.getElementById('light-red');
+            const yellow = document.getElementById('light-yellow');
+            const green = document.getElementById('light-green');
+            const label = document.getElementById('light-label');
+            
+            red.classList.remove('active');
+            yellow.classList.remove('active');
+            green.classList.remove('active');
+
+            if (color === 'red') {
+                red.classList.add('active');
+                label.innerText = '🔴 安靜專心看';
+            } else if (color === 'yellow') {
+                yellow.classList.add('active');
+                label.innerText = '🟡 準備開始';
+            } else if (color === 'green') {
+                green.classList.add('active');
+                label.innerText = '🟢 現在可以說話';
+            }
+        }
+
         function startMode(mode) {
             currentMode = mode;
             document.getElementById('main-menu').style.display = 'none';
@@ -276,6 +336,7 @@
                 document.getElementById('book-nav').style.display = 'none';
                 document.getElementById('challenge-options').style.display = 'grid';
                 challengeIdx = 0;
+                setTrafficLight('green'); // 挑戰模式通常需要討論
                 updateChallenge();
             }
         }
@@ -291,10 +352,12 @@
                 scoreGrid.style.display = 'none';
                 imgEl.src = slide.src;
                 instr.innerText = "我們一起看故事...";
+                setTrafficLight('red'); // 看繪本時要安靜
             } else {
                 imgEl.style.display = 'none';
                 scoreGrid.style.display = 'grid';
                 instr.innerText = "✨ 互動加分時間！";
+                setTrafficLight('green'); // 互動時間可以說話
                 renderScores();
             }
             
@@ -339,6 +402,7 @@
             document.getElementById('display-img').src = q.img;
             document.getElementById('opt-a').innerText = q.options[0].text;
             document.getElementById('opt-b').innerText = q.options[1].text;
+            setTrafficLight('green'); // 挑戰討論時間
         }
 
         function makeChoice(idx) {
@@ -364,6 +428,7 @@
         function goHome() {
             document.getElementById('main-menu').style.display = 'flex';
             document.getElementById('game-area').style.display = 'none';
+            setTrafficLight('yellow');
         }
 
         function updateClock() {
@@ -371,6 +436,7 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+        setTrafficLight('yellow'); // 初始狀態
     </script>
 </body>
 </html>
