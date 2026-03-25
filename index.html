@@ -650,9 +650,8 @@
                 imgEl.style.display = 'none';
                 voiceArea.style.display = 'flex'; 
                 
-                // 語音模式時再顯示出來
-                instr.style.display = 'block';
-                instr.innerText = "✨ 換你來挑戰說說看！";
+                // 語音模式時隱藏導引文字，避免與紅綠燈重疊
+                instr.style.display = 'none';
                 
                 rouletteBox.style.display = 'none'; 
                 document.getElementById('speech-result').innerText = "（你說的話會變成字跑出來喔...）";
